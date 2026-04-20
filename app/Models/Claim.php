@@ -9,11 +9,10 @@ class Claim extends Model
 {
     protected $fillable = [
         'employee_id',
-        'claim_type',
+        'title',
         'amount',
-        'claim_date',
-        'description',
-        'receipt_path',
+        'category',
+        'receipt_upload',
         'status',
         'remarks',
     ];

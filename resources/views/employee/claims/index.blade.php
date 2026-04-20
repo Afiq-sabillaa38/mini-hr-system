@@ -28,9 +28,9 @@
             </a>
 
             <a href="{{ route('employee.payslips.index') }}"
-   class="block px-4 py-3 rounded-lg hover:bg-slate-800">
-    My Payslips
-</a>
+               class="block px-4 py-3 rounded-lg hover:bg-slate-800">
+                My Payslips
+            </a>
         </nav>
     </aside>
 
@@ -65,28 +65,40 @@
                 </div>
             @endif
 
-            <div class="bg-white rounded shadow p-4">
+            <div class="bg-white rounded shadow p-4 overflow-x-auto">
                 <table class="w-full">
                     <thead>
                         <tr class="text-left border-b">
-                            <th>Type</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Status</th>
+                            <th class="py-3">Title</th>
+                            <th class="py-3">Category</th>
+                            <th class="py-3">Amount</th>
+                            <th class="py-3">Receipt</th>
+                            <th class="py-3">Status</th>
+                            <th class="py-3">Remarks</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @forelse($claims as $claim)
                             <tr class="border-b">
-                                <td>{{ $claim->claim_type }}</td>
-                                <td>RM {{ number_format($claim->amount, 2) }}</td>
-                                <td>{{ $claim->claim_date }}</td>
-                                <td>{{ ucfirst($claim->status) }}</td>
+                                <td class="py-3">{{ $claim->title }}</td>
+                                <td class="py-3">{{ $claim->category }}</td>
+                                <td class="py-3">RM {{ number_format($claim->amount, 2) }}</td>
+                                <td class="py-3">
+                                    @if($claim->receipt_upload)
+                                        <a href="{{ asset('storage/' . $claim->receipt_upload) }}" target="_blank" class="text-blue-600 underline">
+                                            View Receipt
+                                        </a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="py-3">{{ $claim->status }}</td>
+                                <td class="py-3">{{ $claim->remarks ?? '-' }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center py-4">
+                                <td colspan="6" class="text-center py-4">
                                     No claims found.
                                 </td>
                             </tr>

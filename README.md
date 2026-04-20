@@ -101,7 +101,7 @@ Profile tests
 
 ## ⚙️ Installation
 ```bash
-git clone https://github.com/your-username/mini-hr-system.git
+git clone https://github.com/Afiq-sabillaa38/mini-hr-system.git
 cd mini-hr-system
 
 composer install

@@ -35,9 +35,9 @@
             </a>
 
             <a href="{{ route('admin.payroll.index') }}"
-   class="block px-4 py-3 rounded-lg text-white font-medium hover:bg-slate-800 transition">
-    Payroll
-</a>
+               class="block px-4 py-3 rounded-lg text-white font-medium hover:bg-slate-800 transition">
+                Payroll
+            </a>
         </nav>
     </aside>
 
@@ -67,12 +67,12 @@
                     <thead>
                         <tr class="text-left border-b">
                             <th class="py-3">Employee</th>
-                            <th class="py-3">Type</th>
+                            <th class="py-3">Title</th>
+                            <th class="py-3">Category</th>
                             <th class="py-3">Amount</th>
-                            <th class="py-3">Claim Date</th>
-                            <th class="py-3">Description</th>
                             <th class="py-3">Receipt</th>
                             <th class="py-3">Status</th>
+                            <th class="py-3">Remarks</th>
                             <th class="py-3">Action</th>
                         </tr>
                     </thead>
@@ -81,22 +81,22 @@
                         @forelse($claims as $claim)
                             <tr class="border-b">
                                 <td class="py-3">{{ $claim->employee->name ?? 'N/A' }}</td>
-                                <td class="py-3">{{ $claim->claim_type }}</td>
+                                <td class="py-3">{{ $claim->title }}</td>
+                                <td class="py-3">{{ $claim->category }}</td>
                                 <td class="py-3">RM {{ number_format($claim->amount, 2) }}</td>
-                                <td class="py-3">{{ $claim->claim_date }}</td>
-                                <td class="py-3">{{ $claim->description ?? '-' }}</td>
                                 <td class="py-3">
-                                    @if($claim->receipt_path)
-                                        <a href="{{ asset('storage/' . $claim->receipt_path) }}" target="_blank" class="text-blue-600 underline">
+                                    @if($claim->receipt_upload)
+                                        <a href="{{ asset('storage/' . $claim->receipt_upload) }}" target="_blank" class="text-blue-600 underline">
                                             View Receipt
                                         </a>
                                     @else
                                         -
                                     @endif
                                 </td>
-                                <td class="py-3">{{ ucfirst($claim->status) }}</td>
+                                <td class="py-3">{{ $claim->status }}</td>
+                                <td class="py-3">{{ $claim->remarks ?? '-' }}</td>
                                 <td class="py-3">
-                                    @if($claim->status === 'pending')
+                                    @if($claim->status === 'Submitted')
                                         <form action="{{ route('admin.claims.approve', $claim->id) }}" method="POST" class="inline">
                                             @csrf
                                             <button class="bg-green-600 text-white px-3 py-1 rounded">

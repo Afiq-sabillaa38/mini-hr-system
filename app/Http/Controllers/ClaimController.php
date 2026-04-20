@@ -21,27 +21,26 @@ class ClaimController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'claim_type' => 'required|string',
-            'amount' => 'required|numeric|min:0.01',
-            'claim_date' => 'required|date',
-            'description' => 'nullable|string',
-            'receipt' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'title' => 'required|string|max:255',
+            'amount' => 'required|numeric|min:0',
+            'category' => 'required|string|max:255',
+            'receipt_upload' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
-        $receiptPath = null;
+        $path = null;
 
-        if ($request->hasFile('receipt')) {
-            $receiptPath = $request->file('receipt')->store('claim_receipts', 'public');
+        if ($request->hasFile('receipt_upload')) {
+            $path = $request->file('receipt_upload')->store('claim_receipts', 'public');
         }
 
         Claim::create([
             'employee_id' => auth()->id(),
-            'claim_type' => $request->claim_type,
+            'title' => $request->title,
             'amount' => $request->amount,
-            'claim_date' => $request->claim_date,
-            'description' => $request->description,
-            'receipt_path' => $receiptPath,
-            'status' => 'pending',
+            'category' => $request->category,
+            'receipt_upload' => $path,
+            'status' => 'Submitted',
+            'remarks' => null,
         ]);
 
         return redirect()->route('employee.claims.index')->with('success', 'Claim submitted successfully.');
@@ -57,12 +56,12 @@ class ClaimController extends Controller
     {
         $claim = Claim::findOrFail($id);
 
-        if ($claim->status !== 'pending') {
+        if ($claim->status !== 'Submitted') {
             return back()->with('success', 'This claim has already been processed.');
         }
 
         $claim->update([
-            'status' => 'approved',
+            'status' => 'Approved',
             'remarks' => 'Approved by admin',
         ]);
 
@@ -73,12 +72,12 @@ class ClaimController extends Controller
     {
         $claim = Claim::findOrFail($id);
 
-        if ($claim->status !== 'pending') {
+        if ($claim->status !== 'Submitted') {
             return back()->with('success', 'This claim has already been processed.');
         }
 
         $claim->update([
-            'status' => 'rejected',
+            'status' => 'Rejected',
             'remarks' => 'Rejected by admin',
         ]);
 

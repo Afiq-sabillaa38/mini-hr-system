@@ -30,9 +30,9 @@
             </a>
 
             <a href="{{ route('employee.payslips.index') }}"
-   class="block px-4 py-3 rounded-lg hover:bg-slate-800">
-    My Payslips
-</a>
+               class="block px-4 py-3 rounded-lg hover:bg-slate-800">
+                My Payslips
+            </a>
         </nav>
     </aside>
 
@@ -66,36 +66,33 @@
                     @csrf
 
                     <div>
-                        <label class="block mb-1 font-medium">Claim Type</label>
-                        <select name="claim_type" class="w-full border rounded px-3 py-2">
-                            <option value="">Select Claim Type</option>
-                            <option value="Medical Claim" {{ old('claim_type') == 'Medical Claim' ? 'selected' : '' }}>Medical Claim</option>
-                            <option value="Travel Claim" {{ old('claim_type') == 'Travel Claim' ? 'selected' : '' }}>Travel Claim</option>
-                            <option value="Meal Claim" {{ old('claim_type') == 'Meal Claim' ? 'selected' : '' }}>Meal Claim</option>
-                            <option value="Other Claim" {{ old('claim_type') == 'Other Claim' ? 'selected' : '' }}>Other Claim</option>
-                        </select>
+                        <label class="block mb-1 font-medium">Title</label>
+                        <input type="text" name="title" value="{{ old('title') }}"
+                               class="w-full border rounded px-3 py-2"
+                               placeholder="Enter claim title">
                     </div>
 
                     <div>
                         <label class="block mb-1 font-medium">Amount</label>
                         <input type="number" step="0.01" min="0.01" name="amount" value="{{ old('amount') }}"
-                               class="w-full border rounded px-3 py-2">
+                               class="w-full border rounded px-3 py-2"
+                               placeholder="Enter amount">
                     </div>
 
                     <div>
-                        <label class="block mb-1 font-medium">Claim Date</label>
-                        <input type="date" id="claim_date" name="claim_date" value="{{ old('claim_date') }}"
-                               class="w-full border rounded px-3 py-2">
+                        <label class="block mb-1 font-medium">Category</label>
+                        <select name="category" class="w-full border rounded px-3 py-2">
+                            <option value="">Select Category</option>
+                            <option value="Medical Claim" {{ old('category') == 'Medical Claim' ? 'selected' : '' }}>Medical Claim</option>
+                            <option value="Travel Claim" {{ old('category') == 'Travel Claim' ? 'selected' : '' }}>Travel Claim</option>
+                            <option value="Meal Claim" {{ old('category') == 'Meal Claim' ? 'selected' : '' }}>Meal Claim</option>
+                            <option value="Other Claim" {{ old('category') == 'Other Claim' ? 'selected' : '' }}>Other Claim</option>
+                        </select>
                     </div>
 
                     <div>
-                        <label class="block mb-1 font-medium">Description</label>
-                        <textarea name="description" rows="4" class="w-full border rounded px-3 py-2">{{ old('description') }}</textarea>
-                    </div>
-
-                    <div>
-                        <label class="block mb-1 font-medium">Receipt</label>
-                        <input type="file" name="receipt" class="w-full border rounded px-3 py-2">
+                        <label class="block mb-1 font-medium">Receipt Upload</label>
+                        <input type="file" name="receipt_upload" class="w-full border rounded px-3 py-2">
                         <p class="text-sm text-gray-500 mt-1">Upload JPG, PNG or PDF. Max 5MB.</p>
                     </div>
 
@@ -107,12 +104,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    const claimDate = document.getElementById('claim_date');
-    const today = new Date().toISOString().split('T')[0];
-    claimDate.max = today;
-</script>
 
 </body>
 </html>

@@ -33,7 +33,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
         $pendingLeaves = \App\Models\Leave::where('status', 'pending')->count();
 
-        $pendingClaims = \App\Models\Claim::where('status', 'pending')->count();
+        $pendingClaims = \App\Models\Claim::where('status', 'Submitted')->count();
 
         $totalBasicSalary = \App\Models\User::where('role', 'employee')
             ->whereNotNull('basic_salary')
