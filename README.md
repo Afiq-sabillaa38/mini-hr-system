@@ -6,6 +6,22 @@ This project demonstrates employee management, payroll calculation, and API inte
 
 ---
 
+## 🚀 Live Demo
+
+👉 https://mini-hr-system-production.up.railway.app
+
+## 🔑 Demo Accounts
+
+Admin
+
+Email: admin@example.com
+Password: password123
+
+Employee
+
+Email: employee@example.com
+Password: password123
+
 ##  🚀 Features
 
 ###  Authentication
