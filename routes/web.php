@@ -103,13 +103,20 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
     Route::get('/employee/claims/create', [ClaimController::class, 'create'])->name('employee.claims.create');
     Route::post('/employee/claims', [ClaimController::class, 'store'])->name('employee.claims.store');
 
-    Route::get('/employee/payslips', function () {
+        Route::get('/employee/payslips', function () {
         $payslips = \App\Models\Payroll::where('employee_id', auth()->id())
             ->latest()
             ->get();
 
         return view('employee.payslips.index', compact('payslips'));
     })->name('employee.payslips.index');
+
+    Route::get('/employee/payslips/{id}', function ($id) {
+        $payslip = \App\Models\Payroll::where('employee_id', auth()->id())
+            ->findOrFail($id);
+
+        return view('employee.payslips.show', compact('payslip'));
+    })->name('employee.payslips.show');
 });
 
 require __DIR__.'/auth.php';

@@ -58,6 +58,7 @@
                             <th class="py-3">Basic Salary</th>
                             <th class="py-3">Total Deductions</th>
                             <th class="py-3">Net Salary</th>
+                            <th class="py-3">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,10 +70,16 @@
                                 <td class="py-3 font-semibold text-green-600">
                                     RM {{ number_format($payslip->net_salary, 2) }}
                                 </td>
+                                <td class="py-3">
+                                    <a href="{{ route('employee.payslips.show', $payslip->id) }}"
+                                       class="inline-block bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700">
+                                        View Details
+                                    </a>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="py-6 text-center text-slate-500">
+                                <td colspan="5" class="py-6 text-center text-slate-500">
                                     No payslip history found.
                                 </td>
                             </tr>
