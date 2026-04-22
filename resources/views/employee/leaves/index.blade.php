@@ -14,26 +14,26 @@
             <h2 class="text-2xl font-bold mb-8 text-white">HR System</h2>
 
             <nav class="space-y-3">
-    <a href="/employee/dashboard"
-       class="block px-4 py-3 rounded-lg hover:bg-slate-800">
-        Dashboard
-    </a>
+                <a href="/employee/dashboard"
+                   class="block px-4 py-3 rounded-lg hover:bg-slate-800">
+                    Dashboard
+                </a>
 
-    <a href="{{ route('employee.leaves.index') }}"
-       class="block px-4 py-3 rounded-lg bg-slate-800">
-        My Leaves
-    </a>
+                <a href="{{ route('employee.leaves.index') }}"
+                   class="block px-4 py-3 rounded-lg bg-slate-800">
+                    My Leaves
+                </a>
 
-    <a href="{{ route('employee.claims.index') }}"
-       class="block px-4 py-3 rounded-lg hover:bg-slate-800">
-        My Claims
-    </a>
+                <a href="{{ route('employee.claims.index') }}"
+                   class="block px-4 py-3 rounded-lg hover:bg-slate-800">
+                    My Claims
+                </a>
 
-    <a href="{{ route('employee.payslips.index') }}"
-   class="block px-4 py-3 rounded-lg hover:bg-slate-800">
-    My Payslips
-</a>
-</nav>
+                <a href="{{ route('employee.payslips.index') }}"
+                   class="block px-4 py-3 rounded-lg hover:bg-slate-800">
+                    My Payslips
+                </a>
+            </nav>
         </aside>
 
         <div class="flex-1 flex flex-col">
@@ -64,6 +64,12 @@
                     </div>
                 @endif
 
+                @if(session('error'))
+                    <div class="mb-4 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <div class="bg-white rounded-2xl shadow border overflow-hidden">
                     <table class="min-w-full">
                         <thead class="bg-slate-50">
@@ -75,6 +81,7 @@
                                 <th class="px-6 py-4 text-left font-semibold text-slate-700">Total Days</th>
                                 <th class="px-6 py-4 text-left font-semibold text-slate-700">Status</th>
                                 <th class="px-6 py-4 text-left font-semibold text-slate-700">Attachment</th>
+                                <th class="px-6 py-4 text-left font-semibold text-slate-700">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,20 +92,58 @@
                                     <td class="px-6 py-4">{{ $leave->start_date }}</td>
                                     <td class="px-6 py-4">{{ $leave->end_date }}</td>
                                     <td class="px-6 py-4">{{ $leave->total_days }}</td>
-                                    <td class="px-6 py-4 capitalize">{{ $leave->status }}</td>
+                                    <td class="px-6 py-4 capitalize">
+                                        {{ ucfirst(str_replace('_', ' ', $leave->status)) }}
+                                    </td>
                                     <td class="px-6 py-4">
                                         @if($leave->attachment_path)
-                                            <a href="{{ asset('storage/' . $leave->attachment_path) }}" target="_blank" class="text-blue-600 underline">
+                                            <a href="{{ asset('storage/' . $leave->attachment_path) }}"
+                                               target="_blank"
+                                               class="text-blue-600 underline">
                                                 View File
                                             </a>
                                         @else
                                             -
                                         @endif
                                     </td>
+                                    <td class="px-6 py-4 space-x-2">
+                                        @if(in_array($leave->status, ['pending', 'rejected']))
+                                            <a href="{{ route('employee.leaves.edit', $leave->id) }}"
+                                               class="inline-block bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
+                                                Edit
+                                            </a>
+                                        @endif
+
+                                        @if($leave->status === 'pending')
+                                            <form action="{{ route('employee.leaves.cancel', $leave->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                <button type="submit"
+                                                        onclick="return confirm('Are you sure you want to cancel this leave?')"
+                                                        class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                                                    Cancel
+                                                </button>
+                                            </form>
+                                        @endif
+
+                                        @if($leave->status === 'approved')
+                                            <form action="{{ route('employee.leaves.requestCancel', $leave->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                <button type="submit"
+                                                        onclick="return confirm('Send cancellation request to admin?')"
+                                                        class="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600">
+                                                    Request Cancel
+                                                </button>
+                                            </form>
+                                        @endif
+
+                                        @if(in_array($leave->status, ['cancelled', 'cancel_pending']))
+                                            <span class="text-slate-500">Completed</span>
+                                        @endif
+                                    </td>
                                 </tr>
                             @empty
                                 <tr class="border-t">
-                                    <td colspan="6" class="px-6 py-6 text-center text-slate-500">
+                                    <td colspan="8" class="px-6 py-6 text-center text-slate-500">
                                         No leave applications found.
                                     </td>
                                 </tr>

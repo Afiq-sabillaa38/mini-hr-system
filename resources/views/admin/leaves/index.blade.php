@@ -24,20 +24,20 @@
                     Employees
                 </a>
 
-              <a href="{{ route('admin.leaves.index') }}"
-   class="block px-4 py-3 rounded-lg bg-slate-800 text-white font-medium">
-    Leaves
-</a>
+                <a href="{{ route('admin.leaves.index') }}"
+                   class="block px-4 py-3 rounded-lg bg-slate-800 text-white font-medium">
+                    Leaves
+                </a>
 
-<a href="{{ route('admin.claims.index') }}"
-   class="block px-4 py-3 rounded-lg text-white font-medium hover:bg-slate-800 transition">
-    Claims
-</a>
+                <a href="{{ route('admin.claims.index') }}"
+                   class="block px-4 py-3 rounded-lg text-white font-medium hover:bg-slate-800 transition">
+                    Claims
+                </a>
 
-<a href="{{ route('admin.payroll.index') }}"
-   class="block px-4 py-3 rounded-lg text-white font-medium hover:bg-slate-800 transition">
-    Payroll
-</a>
+                <a href="{{ route('admin.payroll.index') }}"
+                   class="block px-4 py-3 rounded-lg text-white font-medium hover:bg-slate-800 transition">
+                    Payroll
+                </a>
             </nav>
         </aside>
 
@@ -59,6 +59,12 @@
                 @if(session('success'))
                     <div class="mb-4 bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded">
                         {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="mb-4 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded">
+                        {{ session('error') }}
                     </div>
                 @endif
 
@@ -84,10 +90,14 @@
                                     <td class="px-6 py-4">{{ $leave->start_date }}</td>
                                     <td class="px-6 py-4">{{ $leave->end_date }}</td>
                                     <td class="px-6 py-4">{{ $leave->total_days }}</td>
-                                    <td class="px-6 py-4 capitalize">{{ $leave->status }}</td>
+                                    <td class="px-6 py-4 capitalize">
+                                        {{ ucfirst(str_replace('_', ' ', $leave->status)) }}
+                                    </td>
                                     <td class="px-6 py-4">
                                         @if($leave->attachment_path)
-                                            <a href="{{ asset('storage/' . $leave->attachment_path) }}" target="_blank" class="text-blue-600 underline">
+                                            <a href="{{ asset('storage/' . $leave->attachment_path) }}"
+                                               target="_blank"
+                                               class="text-blue-600 underline">
                                                 View File
                                             </a>
                                         @else
@@ -98,12 +108,30 @@
                                         @if($leave->status === 'pending')
                                             <form action="{{ route('admin.leaves.approve', $leave->id) }}" method="POST" class="inline">
                                                 @csrf
-                                                <button class="bg-green-600 text-white px-3 py-1 rounded">Approve</button>
+                                                <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                                                    Approve
+                                                </button>
                                             </form>
 
                                             <form action="{{ route('admin.leaves.reject', $leave->id) }}" method="POST" class="inline">
                                                 @csrf
-                                                <button class="bg-red-600 text-white px-3 py-1 rounded">Reject</button>
+                                                <button class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                                                    Reject
+                                                </button>
+                                            </form>
+                                        @elseif($leave->status === 'cancel_pending')
+                                            <form action="{{ route('admin.leaves.approveCancel', $leave->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                <button class="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600">
+                                                    Approve Cancel
+                                                </button>
+                                            </form>
+
+                                            <form action="{{ route('admin.leaves.rejectCancel', $leave->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                <button class="bg-slate-500 text-white px-3 py-1 rounded hover:bg-slate-600">
+                                                    Reject Cancel
+                                                </button>
                                             </form>
                                         @else
                                             <span class="text-slate-500">Completed</span>

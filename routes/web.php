@@ -57,6 +57,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::post('/leaves/{id}/approve', [LeaveController::class, 'approve'])->name('admin.leaves.approve');
     Route::post('/leaves/{id}/reject', [LeaveController::class, 'reject'])->name('admin.leaves.reject');
 
+    Route::post('/leaves/{id}/approve-cancel', [LeaveController::class, 'approveCancel'])->name('admin.leaves.approveCancel');
+Route::post('/leaves/{id}/reject-cancel', [LeaveController::class, 'rejectCancel'])->name('admin.leaves.rejectCancel');
+
     Route::get('/claims', [ClaimController::class, 'adminIndex'])->name('admin.claims.index');
     Route::post('/claims/{id}/approve', [ClaimController::class, 'approve'])->name('admin.claims.approve');
     Route::post('/claims/{id}/reject', [ClaimController::class, 'reject'])->name('admin.claims.reject');
@@ -98,6 +101,13 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
     Route::get('/employee/leaves', [LeaveController::class, 'index'])->name('employee.leaves.index');
     Route::get('/employee/leaves/create', [LeaveController::class, 'create'])->name('employee.leaves.create');
     Route::post('/employee/leaves', [LeaveController::class, 'store'])->name('employee.leaves.store');
+
+    Route::get('/employee/leaves/{id}/edit', [LeaveController::class, 'edit'])->name('employee.leaves.edit');
+Route::put('/employee/leaves/{id}', [LeaveController::class, 'update'])->name('employee.leaves.update');
+Route::post('/employee/leaves/{id}/cancel', [LeaveController::class, 'cancel'])->name('employee.leaves.cancel');
+Route::post('/employee/leaves/{id}/request-cancel', [LeaveController::class, 'requestCancel'])->name('employee.leaves.requestCancel');
+
+
 
     Route::get('/employee/claims', [ClaimController::class, 'index'])->name('employee.claims.index');
     Route::get('/employee/claims/create', [ClaimController::class, 'create'])->name('employee.claims.create');
