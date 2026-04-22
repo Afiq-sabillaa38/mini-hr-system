@@ -1,1 +1,1 @@
-<img src="{{ asset('images/logo-task.png') }}" class="w-40 h-40 object-contain mx-auto" alt="Logo">
+<img src="{{ asset('images/logo-taskk.png') }}" class="w-40 h-40 object-contain mx-auto" alt="Logo">
