@@ -1,1 +1,1 @@
-<img src="{{ asset('images/mairon-logo.png') }}" class="h-16 w-auto mx-auto" alt="Logo">
+<img src="{{ asset('images/mairon-logo.png') }}" class="w-28 h-28 object-contain mx-auto" alt="Logo">
