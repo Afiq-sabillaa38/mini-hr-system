@@ -74,6 +74,7 @@
                             <tr>
                                 <th class="px-6 py-4 text-left font-semibold text-slate-700">Employee</th>
                                 <th class="px-6 py-4 text-left font-semibold text-slate-700">Type</th>
+                                <th class="px-6 py-4 text-left font-semibold text-slate-700">Reason</th>
                                 <th class="px-6 py-4 text-left font-semibold text-slate-700">Start Date</th>
                                 <th class="px-6 py-4 text-left font-semibold text-slate-700">End Date</th>
                                 <th class="px-6 py-4 text-left font-semibold text-slate-700">Total Days</th>
@@ -93,6 +94,9 @@
                                     <td class="px-6 py-4 capitalize">
                                         {{ ucfirst(str_replace('_', ' ', $leave->status)) }}
                                     </td>
+                                  <td class="px-6 py-4 max-w-xs truncate" title="{{ $leave->reason }}">
+    {{ $leave->reason ?? '-' }}
+</td>
                                     <td class="px-6 py-4">
                                         @if($leave->attachment_path)
                                             <a href="{{ asset('storage/' . $leave->attachment_path) }}"
